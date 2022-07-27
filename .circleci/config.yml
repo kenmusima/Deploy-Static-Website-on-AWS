@@ -23,9 +23,14 @@ jobs:
 
   upload-files:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.9.0-alpine
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update curl rsync openssh
+            pip install awscli
       - run:
           name: Copy file to s3
           command: |
