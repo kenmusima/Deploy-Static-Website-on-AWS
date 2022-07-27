@@ -10,6 +10,8 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name StaticWebsite
             aws s3 rm s3://travel-blog-ke/ --recursive
+            aws s3api delete-bucket --bucket travel-blog-ke --region us-east-1
+
 jobs:
   create-bucket:
     docker:
@@ -50,7 +52,7 @@ jobs:
       - run:
           name: Add IAM and turn on static website hosting
           command: |
-            aws s3api put-bucket-policy --bucket travel-blog-ke --policy file:///policy.json
+            aws s3api put-bucket-policy --bucket travel-blog-ke --policy file://policy.json
             aws s3 website s3://travel-blog-ke/ --index-document index.html
       - destroy-environment
 
