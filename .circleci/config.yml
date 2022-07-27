@@ -19,7 +19,8 @@ jobs:
       - run:
           name: Create S3 Bucket
           command: |
-            aws s3api create-bucket --bucket travel-blog-ke --region us-east-1 --acl public-read-write
+            aws s3api create-bucket --bucket travel-blog-ke --region us-east-1
+            aws s3api put-bucket-acl --bucket travel-blog-ke --acl public-read
 
   upload-files:
     docker:
