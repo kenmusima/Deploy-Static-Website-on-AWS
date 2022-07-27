@@ -63,7 +63,7 @@ jobs:
           name: Create cloudfront and configure it to use s3 bucket.
           command: |
             aws cloudformation deploy \
-            --template-file .circleci/file/cloudfront.yml \
+            --template-file .circleci/files/cloudfront.yml \
             --tags project=travelblog \
             --stack-name StaticWebsite
       - destroy-environment
