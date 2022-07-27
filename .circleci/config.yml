@@ -1,7 +1,17 @@
 version: 2.1
 
+commands:
+  destroy-environment:
+    description: Destroy s3 bucket and cloudformation
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name StaticWebsite
+            aws s3 rm s3://travel-blog-ke/ --recursive
 jobs:
-  create_bucket:
+  create-bucket:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -11,7 +21,7 @@ jobs:
           command: |
             aws s3api create-bucket --bucket travel-blog-ke --region us-east-1 --acl public-read-write
 
-  upload_files:
+  upload-files:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -25,8 +35,9 @@ jobs:
             aws s3api put-object --bucket travel-blog-ke --key index.js --body index.js
             aws s3 cp css/ s3://travel-blog-ke/css/ --recursive 
             aws s3 cp img/ s3://travel-blog-ke/img/ --recursive
+      - destroy-environment
 
-  secure_bucket:
+  configure-bucket:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -36,3 +47,29 @@ jobs:
           command: |
             aws s3api put-bucket-policy --bucket travel-blog-ke --policy file://policy.json
             aws s3 website s3://travel-blog-ke/ --index-document index.html
+      - destroy-environment
+
+  deploy:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create cloudfront and configure it to use s3 bucket.
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/file/cloudfront.yml \
+            --tags project=travelblog \
+            --stack-name StaticWebsite
+      - destroy-environment
+
+workflows:
+  default:
+    jobs:
+      - create-bucket
+      - upload-files:
+          requires: [create-bucket]
+      - configure-bucket:
+          requires: [upload-files]
+      - deploy:
+          requires: [configure-bucket]
