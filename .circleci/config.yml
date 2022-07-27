@@ -1,0 +1,38 @@
+version: 2.1
+
+jobs:
+  create_bucket:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create S3 Bucket
+          command: |
+            aws s3api create-bucket --bucket travel-blog-ke --region us-east-1 --acl public-read-write
+
+  upload_files:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Copy file to s3
+          command: |
+            aws s3api list-buckets
+            cd website
+            aws s3api put-object --bucket travel-blog-ke --key index.html --body index.html
+            aws s3api put-object --bucket travel-blog-ke --key index.js --body index.js
+            aws s3 cp css/ s3://travel-blog-ke/css/ --recursive 
+            aws s3 cp img/ s3://travel-blog-ke/img/ --recursive
+
+  secure_bucket:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Add IAM and turn on static website hosting
+          command: |
+            aws s3api put-bucket-policy --bucket travel-blog-ke --policy file://policy.json
+            aws s3 website s3://travel-blog-ke/ --index-document index.html
