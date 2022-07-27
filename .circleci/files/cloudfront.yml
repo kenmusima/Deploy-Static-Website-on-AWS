@@ -13,7 +13,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: "travel-blog-ke.s3.amazonaws.com"
+          - DomainName: travel-blog-ke.s3.us-east-1.amazonaws.com
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
