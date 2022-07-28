@@ -38,8 +38,8 @@ jobs:
           command: |
             aws s3api list-buckets
             cd website
-            aws s3api put-object --bucket travel-blog-ke --key index.html --body index.html
-            aws s3api put-object --bucket travel-blog-ke --key index.js --body index.js
+            aws s3api put-object --bucket travel-blog-ke --key index.html --body index.html --metadata Content-Type=text/html
+            aws s3api put-object --bucket travel-blog-ke --key index.js --body index.js --metadata Content-Type=application/javascript
             aws s3 cp css/ s3://travel-blog-ke/css/ --recursive 
             aws s3 cp img/ s3://travel-blog-ke/img/ --recursive
       - destroy-environment

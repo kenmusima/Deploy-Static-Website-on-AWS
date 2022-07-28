@@ -20,6 +20,9 @@ Resources:
         Enabled: True
         DefaultRootObject: index.html
         DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
           ForwardedValues:
             QueryString: False
           TargetOriginId: webpage
