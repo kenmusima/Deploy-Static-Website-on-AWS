@@ -31,3 +31,13 @@ The project does the following:
 
 In AWS S3 objects content type for html can default to binary/octet-stream. Go to the bucket, select the index.html and click on **Object actions** then select **Edit metadata** and change Content Type to text/html.
 For reference [AWS S3 not serving files](https://stackoverflow.com/questions/2618168/amazon-s3-is-not-serving-files-correctly)
+
+### Screenshots
+
+|<img src="screenshots/CloudFront UI.png" width=200/>|<img src="screenshots/S3 Bucket UI.png" width=200/>|
+|:----:|:----:|
+|<img src="screenshots/CloudFront UI 2.png" width=200/>|<img src="screenshots/S3 Bucket UI 2.png" width=200/>|
+
+|<img src="screenshots/AWS S3 Bucket.png" width=200/>|<img src="screenshots/AWS CloudFront.png" width=200/>|
+
+|<img src="screenshots/AWS CloudFormation.png" width=200/>
