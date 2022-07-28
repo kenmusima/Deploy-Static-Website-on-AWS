@@ -1,0 +1,5 @@
+#CloudFront URL
+http://d2l4kjzamoidet.cloudfront.net/
+
+#S3 Bucket URL
+http://travel-blog-ke.s3-website-us-east-1.amazonaws.com
